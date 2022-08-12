@@ -1,0 +1,40 @@
+Package: spmodel
+Title: Spatial Statistical Modeling and Prediction
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Michael",
+           family = "Dumelle",
+           role = c("aut", "cre"),
+           email = "Dumelle.Michael@epa.gov",
+           comment = c(ORCID = "0000-0002-3393-5529")),
+    person(given = "Matt",
+           family = "Higham",
+           role = "aut",
+           email = "mhigham@stlawu.edu"),
+    person(given = "Jay M.",
+       family = "Ver Hoef",
+       role = "aut",
+       email = "jay.verhoef@noaa.gov")
+    )
+Description: Fit, summarize, and predict for a variety of spatial statistical models. Parameters
+    are estimated using various methods. Additional modeling features include anisotropy,
+    random effects, partition factors, big data approaches, and more. Model-fit statistics are
+    used to summarize, visualize, and compare models. Predictions at unobserved locations are
+    readily obtainable.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Depends: R (>= 3.5.0)
+Imports: graphics, generics, Matrix, sf, stats, tibble, parallel
+Suggests: rmarkdown, knitr, testthat (>= 3.0.0), ggplot2
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+NeedsCompilation: no
+Packaged: 2022-08-09 23:58:24 UTC; MDUMELLE
+Author: Michael Dumelle [aut, cre] (<https://orcid.org/0000-0002-3393-5529>),
+  Matt Higham [aut],
+  Jay M. Ver Hoef [aut]
+Maintainer: Michael Dumelle <Dumelle.Michael@epa.gov>
+Repository: CRAN
+Date/Publication: 2022-08-12 13:50:02 UTC
