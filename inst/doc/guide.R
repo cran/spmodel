@@ -28,6 +28,9 @@ ggplot(moss, aes(color = log_Zn)) +
   scale_color_viridis_c() +
   theme_gray(base_size = 14)
 
+## ---- eval = FALSE------------------------------------------------------------
+#  mapview(moss, zcol = "log_Zn")
+
 ## -----------------------------------------------------------------------------
 spmod <- splm(log_Zn ~ log_dist2road, moss, spcov_type = "exponential")
 
@@ -64,20 +67,20 @@ AICc(spmod, lmod)
 loocv(spmod)
 loocv(lmod)
 
-## ---- results = "hide"--------------------------------------------------------
-hatvalues(spmod)
+## ---- eval = FALSE------------------------------------------------------------
+#  hatvalues(spmod)
 
-## ---- results = "hide"--------------------------------------------------------
-fitted(spmod)
+## ---- eval = FALSE------------------------------------------------------------
+#  fitted(spmod)
 
-## ---- results = "hide"--------------------------------------------------------
-residuals(spmod)
+## ---- eval = FALSE------------------------------------------------------------
+#  residuals(spmod)
 
-## ---- results = "hide"--------------------------------------------------------
-residuals(spmod, type = "pearson")
+## ---- eval = FALSE------------------------------------------------------------
+#  residuals(spmod, type = "pearson")
 
-## ---- results = "hide"--------------------------------------------------------
-residuals(spmod, type = "standardized")
+## ---- eval = FALSE------------------------------------------------------------
+#  residuals(spmod, type = "standardized")
 
 ## ---- results = "hide"--------------------------------------------------------
 rstandard(spmod)
@@ -88,8 +91,8 @@ rstandard(spmod)
 ## ---- eval = FALSE------------------------------------------------------------
 #  plot(spmod, which = 2) # figure omitted
 
-## ---- results = "hide"--------------------------------------------------------
-cooks.distance(spmod)
+## ---- eval = FALSE------------------------------------------------------------
+#  cooks.distance(spmod)
 
 ## ----d_vs_l, fig.cap="Cook's distance vs leverage of fitted model.", out.width="75%", fig.align="center", eval = FALSE----
 #  plot(spmod, which = 6) # figure omitted
@@ -109,11 +112,14 @@ augment(spmod)
 ## -----------------------------------------------------------------------------
 seal
 
-## ----log_trend, fig.cap="Distribution of log seal trends in the seal data. Polygons are gray where seal trends were not available.", out.width = "65%", fig.align="center"----
+## ----log_trend, fig.cap="Distribution of log seal trends in the seal data. Polygons are gray if seal trends are missing.", out.width = "65%", fig.align="center"----
 ggplot(seal, aes(fill = log_trend)) +
   geom_sf(size = 0.75) +
   scale_fill_viridis_c() +
-  theme_gray(base_size = 14)
+  theme_bw(base_size = 14) 
+
+## ---- eval = FALSE------------------------------------------------------------
+#  mapview(seal, zcol = "log_trend")
 
 ## -----------------------------------------------------------------------------
 sealmod <- spautor(log_trend ~ 1, seal, spcov_type = "car")
@@ -133,10 +139,9 @@ augment(sealmod)
 sulfmod <- splm(sulfate ~ 1, sulfate, spcov_type = "spherical")
 
 ## ---- results = "hide"--------------------------------------------------------
-predict(sulfmod, newdata = sulfate_preds)
+sulfate_preds$preds <- predict(sulfmod, newdata = sulfate_preds)
 
 ## ---- eval = FALSE------------------------------------------------------------
-#  sulfate_preds$preds <- predict(sulfmod, newdata = sulfate_preds)
 #  ggplot(sulfate_preds, aes(color = preds)) +
 #    geom_sf(size = 2.5) +
 #    scale_color_viridis_c(limits = c(0, 45)) +
@@ -154,14 +159,14 @@ ggplot(sulfate_preds, aes(color = preds)) +
   scale_color_viridis_c(limits = c(0, 45)) +
   theme_gray(base_size = 18)
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sulfmod, newdata = sulfate_preds, se.fit = TRUE)
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sulfmod, newdata = sulfate_preds, se.fit = TRUE)
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sulfmod, newdata = sulfate_preds, interval = "prediction")
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sulfmod, newdata = sulfate_preds, interval = "prediction")
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sulfmod, newdata = sulfate_preds, interval = "confidence")
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sulfmod, newdata = sulfate_preds, interval = "confidence")
 
 ## -----------------------------------------------------------------------------
 sulfate_preds$preds <- NULL
@@ -172,19 +177,24 @@ augment(sulfmod, newdata = sulfate_preds, interval = "prediction", level = 0.90)
 ## -----------------------------------------------------------------------------
 sulfate_preds$sulfate <- NA
 sulfate_with_NA <- rbind(sulfate, sulfate_preds)
-sulfmod_with_NA <- splm(sulfate ~ 1, sulfate_with_NA, "spherical")
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sulfmod_with_NA)
+## -----------------------------------------------------------------------------
+sulfmod_with_NA <- splm(sulfate ~ 1, sulfate_with_NA, "spherical")
 
 ## -----------------------------------------------------------------------------
 sulfmod_with_NA$newdata
 
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sulfmod_with_NA)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sulfmod_with_NA, newdata = sulfmod_with_NA$newdata)
+
 ## -----------------------------------------------------------------------------
 augment(sulfmod_with_NA, newdata = sulfmod_with_NA$newdata)
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sealmod)
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sealmod)
 
 ## -----------------------------------------------------------------------------
 augment(sealmod, newdata = sealmod$newdata)
@@ -198,6 +208,18 @@ spmod_red <- splm(log_Zn ~ log_dist2road, moss, spcov_initial = init)
 
 ## -----------------------------------------------------------------------------
 glances(spmod, spmod_red)
+
+## -----------------------------------------------------------------------------
+spmods <- splm(sulfate ~ 1, sulfate, spcov_type = c("exponential", "spherical", "none"))
+
+## -----------------------------------------------------------------------------
+glances(spmods)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(spmods, newdata = sulfate_preds)
+
+## -----------------------------------------------------------------------------
+AIC(spmods$exponential)
 
 ## -----------------------------------------------------------------------------
 rand1 <- splm(
@@ -216,15 +238,15 @@ rand2 <- splm(
 )
 
 ## -----------------------------------------------------------------------------
-glances(spmod, rand1, rand2)
+glances(rand1, rand2)
 
-## -----------------------------------------------------------------------------
-part <- splm(
-  log_Zn ~ log_dist2road,
-  moss,
-  spcov_type = "exponential",
-  partition_factor = ~ year
-)
+## ---- eval = FALSE------------------------------------------------------------
+#  part <- splm(
+#    log_Zn ~ log_dist2road,
+#    moss,
+#    spcov_type = "exponential",
+#    partition_factor = ~ year
+#  )
 
 ## ----anisotropy, echo = FALSE, out.width = "49%", fig.show = "hold", fig.cap = "Ellipses for an isotropic (left) and anisotropic (right) covariance function centered at the origin. The black outline of each ellipse is a level curve of equal correlation."----
 # PRELIMINARIES 
@@ -270,11 +292,11 @@ spmod_anis <- splm(
 )
 summary(spmod_anis)
 
-## ---- anisotropy_fit, echo = FALSE, out.width = "33%", fig.show = "hold", fig.cap = "A visual representation of the anisotropy transformation. In the left figure, the first step is to rotate the anisotropic ellipse clockwise by the \\texttt{rotate} parameter. In the middle figure, the second step is to scale the minor axis by the reciprocal of the \\texttt{scale} parameter. In the right figure, the anisotropic ellipse has been transformed into an isotropic one (i.e., a circle). The transformed coordinates are then used instead of the original coordinates to compute distances and spatial covariances."----
+## ---- anisotropy_fit, echo = FALSE, out.width = "33%", fig.show = "hold", fig.cap = "A visual representation of the anisotropy transformation. In the left figure, the first step is to rotate the anisotropic ellipse clockwise by the \\texttt{rotate} parameter (here \\texttt{rotate} is 0.75 radians or 135 degrees). In the middle figure, the second step is to scale the y axis by the reciprocal of the \\texttt{scale} parameter (here \\texttt{scale} is 0.5). In the right figure, the anisotropic ellipse has been transformed into an isotropic one (i.e., a circle). The transformed coordinates are then used instead of the original coordinates to compute distances and spatial covariances."----
 spcov_params_val <- coef(spmod_anis, type = "spcov")
 # FIRST FIGURE
-theta <- spcov_params_val["rotate"]
-R <- spcov_params_val["scale"]
+theta <- 3 * pi / 4
+R <- 1 / 2
 scale <- matrix(c(1, 0, 0, R), nrow = 2, byrow = TRUE)
 rotate <- matrix(c(cos(theta), -sin(theta), sin(theta), cos(theta)), nrow = 2, byrow = TRUE)
 transform <- rotate %*% scale
@@ -343,30 +365,25 @@ n <- 3000
 x <- runif(n)
 y <- runif(n)
 sim_coords <- tibble::tibble(x, y)
-sim_resp <- sprnorm(sim_params, data = sim_coords, xcoord = x, ycoord = y)
-sim_data <- tibble::tibble(sim_coords, sim_resp)
+sim_response <- sprnorm(sim_params, data = sim_coords, xcoord = x, ycoord = y)
+sim_data <- tibble::tibble(sim_coords, sim_response)
 
 ## ----sim, fig.align="center", out.width = "75%", fig.cap = "Spatial data simulated in the unit square.", eval = FALSE----
-#  ggplot(sim_data, aes(x = x, y = y, color = sim_resp)) +
+#  ggplot(sim_data, aes(x = x, y = y, color = sim_response)) +
 #    geom_point(size = 1.5) +
 #    scale_color_viridis_c(limits = c(-7, 7)) +
 #    theme_gray(base_size = 18)
 
 ## -----------------------------------------------------------------------------
-local1 <- splm(sim_resp ~ 1, sim_data, spcov_type = "exponential", 
+local1 <- splm(sim_response ~ 1, sim_data, spcov_type = "exponential", 
                xcoord = x, ycoord = y, local = TRUE)
 summary(local1)
 
 ## -----------------------------------------------------------------------------
 local2_list <- list(method = "kmeans", groups = 60, var_adjust = "pooled",
                     parallel = TRUE, ncores = 2)
-local2 <- splm(sim_resp ~ 1, sim_data, spcov_type = "exponential", 
+local2 <- splm(sim_response ~ 1, sim_data, spcov_type = "exponential", 
                xcoord = x, ycoord = y, local = local2_list)
-summary(local2)
-
-## -----------------------------------------------------------------------------
-loocv(local1, local = list(method = "distance", parallel = TRUE, ncores = 2))
-loocv(local2, local = list(method = "distance", parallel = TRUE, ncores = 2))
 
 ## -----------------------------------------------------------------------------
 n_pred <- 1000
@@ -385,7 +402,7 @@ sim_preds$preds <- predict(local1, newdata = sim_preds, local = TRUE)
 
 ## ----sim_preds, echo = FALSE, fig.align="center", fig.show = "hold", out.width = "49%", fig.cap = "Observed data and big data predictions at unobserved locations. In the left figure, spatial data are simulated in the unit square. A spatial linear model is fit using the default big data approximation for model-fitting. In the right figure, predictions are made using the fitted model and the default big data approximation for prediction."----
 
-ggplot(sim_data, aes(x = x, y = y, color = sim_resp)) +
+ggplot(sim_data, aes(x = x, y = y, color = sim_response)) +
   geom_point(size = 1.5) +
   scale_color_viridis_c(limits = c(-7, 7)) + 
   theme_gray(base_size = 18)
@@ -399,8 +416,15 @@ ggplot(sim_preds, aes(x = x, y = y, color = preds)) +
 pred_list <- list(method = "distance", size = 30, parallel = TRUE, ncores = 2)
 predict(local1, newdata = sim_preds, local = pred_list)
 
-## ---- results = "hide"--------------------------------------------------------
-predict(sealmod, local = list(parallel = TRUE, ncores = 2))
+## -----------------------------------------------------------------------------
+sulfate$var <- rnorm(NROW(sulfate))
+sulfate_preds$var <- rnorm(NROW(sulfate_preds))
+
+## ---- eval = FALSE------------------------------------------------------------
+#  sprfmod <- splmRF(sulfate ~ var, sulfate, spcov_type = "exponential")
+
+## ---- eval = FALSE------------------------------------------------------------
+#  predict(sprfmod, newdata = sulfate_preds)
 
 ## -----------------------------------------------------------------------------
 caribou
