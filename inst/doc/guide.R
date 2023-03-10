@@ -125,6 +125,7 @@ ggplot(seal, aes(fill = log_trend)) +
 sealmod <- spautor(log_trend ~ 1, seal, spcov_type = "car")
 
 ## -----------------------------------------------------------------------------
+summary(sealmod)
 tidy(sealmod)
 glance(sealmod)
 augment(sealmod)
