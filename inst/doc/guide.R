@@ -24,7 +24,7 @@ moss
 
 ## ----log_zn, fig.cap="Distribution of log zinc concentration in the moss data.", out.width = "65%", fig.align="center"----
 ggplot(moss, aes(color = log_Zn)) +
-  geom_sf(size = 2) +
+  geom_sf() +
   scale_color_viridis_c() +
   theme_gray(base_size = 14)
 
@@ -214,13 +214,16 @@ glances(spmod, spmod_red)
 spmods <- splm(sulfate ~ 1, sulfate, spcov_type = c("exponential", "spherical", "none"))
 
 ## -----------------------------------------------------------------------------
+augment(spmods$exponential)
+
+## -----------------------------------------------------------------------------
+AIC(spmods$spherical)
+
+## -----------------------------------------------------------------------------
 glances(spmods)
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  predict(spmods, newdata = sulfate_preds)
-
-## -----------------------------------------------------------------------------
-AIC(spmods$exponential)
 
 ## -----------------------------------------------------------------------------
 rand1 <- splm(
@@ -293,7 +296,7 @@ spmod_anis <- splm(
 )
 summary(spmod_anis)
 
-## ---- anisotropy_fit, echo = FALSE, out.width = "33%", fig.show = "hold", fig.cap = "A visual representation of the anisotropy transformation. In the left figure, the first step is to rotate the anisotropic ellipse clockwise by the \\texttt{rotate} parameter (here \\texttt{rotate} is 0.75 radians or 135 degrees). In the middle figure, the second step is to scale the y axis by the reciprocal of the \\texttt{scale} parameter (here \\texttt{scale} is 0.5). In the right figure, the anisotropic ellipse has been transformed into an isotropic one (i.e., a circle). The transformed coordinates are then used instead of the original coordinates to compute distances and spatial covariances."----
+## ---- anisotropy_fit, echo = FALSE, out.width = "33%", fig.show = "hold", fig.cap = "A visual representation of the anisotropy transformation. In the left figure, the first step is to rotate the anisotropic ellipse clockwise by the \\texttt{rotate} parameter (here \\texttt{rotate} is 0.75$\\pi$ radians or 135 degrees). In the middle figure, the second step is to scale the y axis by the reciprocal of the \\texttt{scale} parameter (here \\texttt{scale} is 0.5). In the right figure, the anisotropic ellipse has been transformed into an isotropic one (i.e., a circle). The transformed coordinates are then used instead of the original coordinates to compute distances and spatial covariances."----
 spcov_params_val <- coef(spmod_anis, type = "spcov")
 # FIRST FIGURE
 theta <- 3 * pi / 4
@@ -426,6 +429,77 @@ sulfate_preds$var <- rnorm(NROW(sulfate_preds))
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  predict(sprfmod, newdata = sulfate_preds)
+
+## -----------------------------------------------------------------------------
+moose
+
+## ----moose, fig.align="center", out.width = "65%", fig.cap = "Distribution of moose presence in Alaska. presence equals one if at least one moose was observed at the site and zero otherwise."----
+ggplot(moose, aes(color = presence)) +
+  geom_sf(size = 2) +
+  scale_color_viridis_d() +
+  theme_gray(base_size = 14)
+
+## -----------------------------------------------------------------------------
+binmod <- spglm(presence ~ elev, family = "binomial",
+                data  = moose, spcov_type = "exponential")
+
+## -----------------------------------------------------------------------------
+summary(binmod)
+
+## -----------------------------------------------------------------------------
+tidy(binmod)
+
+## -----------------------------------------------------------------------------
+glance(binmod)
+
+## -----------------------------------------------------------------------------
+augment(binmod)
+
+## -----------------------------------------------------------------------------
+moose_preds$preds <- predict(binmod, newdata = moose_preds, type = "response")
+
+## ----moose-pred, fig.align="center", out.width = "65%", fig.cap = "Distribution of moose presence probability predictions in Alaska."----
+ggplot(moose_preds, aes(color = preds)) + 
+  geom_sf(size = 2) +
+  scale_color_viridis_c(limits = c(0, 1)) + 
+  theme_gray(base_size = 14)
+
+## -----------------------------------------------------------------------------
+moose_preds$preds <- NULL
+augment(binmod, newdata = moose_preds, type = "response", interval = "prediction")
+
+## -----------------------------------------------------------------------------
+sim_params <- spcov_params("exponential", de = 5, ie = 1, range = 0.5)
+set.seed(0)
+n <- 3000
+x <- runif(n)
+y <- runif(n)
+sim_coords <- tibble::tibble(x, y)
+
+## -----------------------------------------------------------------------------
+sim_response <- sprbinom(sim_params, data = sim_coords, xcoord = x, ycoord = y)
+sim_data <- tibble::tibble(sim_coords, sim_response = factor(sim_response))
+
+## ----sim-glm, fig.align="center", out.width = "65%", fig.cap = "Spatial binomial data simulated in the unit square.", eval = TRUE----
+ggplot(sim_data, aes(x = x, y = y, color = sim_response)) +
+  geom_point(size = 1.5) +
+  scale_color_viridis_d() +
+  theme_gray(base_size = 14)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  poismod <- spglm(count ~ elev, family = "poisson",
+#                   data = moose, spcov_type = "exponential")
+#  predict(poismod, newdata = moose_preds)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  nbmod <- spglm(count ~ elev, family = "nbinomial",
+#                 data = moose, spcov_type = "exponential")
+#  predict(nbmod, newdata = moose_preds)
+
+## ---- eval = FALSE------------------------------------------------------------
+#  gammamod <- spglm(sulfate ~ 1, family = "Gamma",
+#                    data = sulfate, spcov_type = "exponential")
+#  predict(gammamod, newdata = sulfate_preds)
 
 ## -----------------------------------------------------------------------------
 caribou
