@@ -1,6 +1,6 @@
 Package: spmodel
 Title: Spatial Statistical Modeling and Prediction
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: c(
     person(given = "Michael",
            family = "Dumelle",
@@ -20,7 +20,7 @@ Description: Fit, summarize, and predict for a variety of spatial statistical mo
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Depends: R (>= 3.5.0)
 Imports: graphics, generics, Matrix, sf, stats, tibble, parallel
 Suggests: rmarkdown, knitr, testthat (>= 3.0.0), ggplot2, ranger,
@@ -30,10 +30,10 @@ Config/testthat/edition: 3
 URL: https://usepa.github.io/spmodel/
 BugReports: https://github.com/USEPA/spmodel/issues
 NeedsCompilation: no
-Packaged: 2023-05-26 17:19:57 UTC; MDUMELLE
+Packaged: 2023-10-25 19:24:17 UTC; MDUMELLE
 Author: Michael Dumelle [aut, cre] (<https://orcid.org/0000-0002-3393-5529>),
   Matt Higham [aut],
   Jay M. Ver Hoef [aut]
 Maintainer: Michael Dumelle <Dumelle.Michael@epa.gov>
 Repository: CRAN
-Date/Publication: 2023-05-26 17:40:02 UTC
+Date/Publication: 2023-10-25 19:40:02 UTC

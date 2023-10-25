@@ -89,7 +89,7 @@ moose
 
 ## -----------------------------------------------------------------------------
 ggplot(moose, aes(color = presence)) +
-  scale_color_viridis_d() +
+  scale_color_viridis_d(option = "H") +
   geom_sf(size = 2) 
 
 ## -----------------------------------------------------------------------------
@@ -121,7 +121,7 @@ moose_preds$preds <- predict(binmod, newdata = moose_preds, type = "response")
 ## -----------------------------------------------------------------------------
 ggplot(moose_preds, aes(color = preds)) + 
   geom_sf(size = 2) +
-  scale_color_viridis_c(limits = c(0, 1))
+  scale_color_viridis_c(limits = c(0, 1), option = "H")
 
 ## -----------------------------------------------------------------------------
 moose_preds$preds <- NULL
