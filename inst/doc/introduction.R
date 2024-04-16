@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 # # jss style
 # knitr::opts_chunk$set(prompt=TRUE, echo = TRUE, highlight = FALSE, continue = " + ", comment = "")
 # options(replace.assign=TRUE, width=90, prompt="R> ")
@@ -10,13 +10,13 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>", warning = FALSE, message
 library(ggplot2)
 library(spmodel)
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  library(spmodel)
 
 ## -----------------------------------------------------------------------------
 citation(package = "spmodel")
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  library(ggplot2)
 
 ## -----------------------------------------------------------------------------
