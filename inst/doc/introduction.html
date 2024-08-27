@@ -1575,7 +1575,7 @@ website at <a href="https://usepa.github.io/spmodel/">https://usepa.github.io/sp
 <ol style="list-style-type: decimal">
 <li>2024 Society for Freshwater Science Conference: “Spatial Analysis
 and Statistical Modeling with R and <code>spmodel</code> available at <a href="https://usepa.github.io/spworkshop.sfs24/">https://usepa.github.io/spworkshop.sfs24/</a></li>
-<li>2923 Spatial Statistics Conference: <code>spmodel</code> workshop
+<li>2023 Spatial Statistics Conference: <code>spmodel</code> workshop
 available at <a href="https://usepa.github.io/spmodel.spatialstat2023/">https://usepa.github.io/spmodel.spatialstat2023/</a></li>
 </ol>
 </div>
@@ -1804,6 +1804,7 @@ parameters</li>
 used when fitting the model</li>
 <li><code>AIC</code>: The Akaike Information Criterion (AIC)</li>
 <li><code>AICc</code>: The AIC with a small sample size correction</li>
+<li><code>BIC</code>: The Bayesian Information Criterion (BIC)</li>
 <li><code>logLik</code>: The log-likelihood</li>
 <li><code>deviance</code>: The deviance</li>
 <li><code>pseudo.r.squared</code>: The pseudo r-squared</li>
@@ -1824,9 +1825,9 @@ glances(spmod, lmod)</code></pre>
 <p>The much lower AIC and AICc for the spatial linear model indicates it
 is a much better fit to the data. Outside of <code>glance()</code> and
 <code>glances()</code>, the functions <code>AIC()</code>,
-<code>AICc()</code>, <code>logLik()</code>, <code>deviance()</code>, and
-<code>pseudoR2()</code> are available to compute the relevant
-statistics.</p>
+<code>AICc()</code>, <code>BIC()</code> <code>logLik()</code>,
+<code>deviance()</code>, and <code>pseudoR2()</code> are available to
+compute the relevant statistics.</p>
 <p>We augment the data with diagnostics by running</p>
 <pre class="r"><code>augment(spmod)</code></pre>
 <pre><code>#&gt; Simple feature collection with 365 features and 7 fields
@@ -2097,18 +2098,20 @@ view the first few rows of the <code>moose</code> data by running</p>
 #&gt; Dimension:     XY
 #&gt; Bounding box:  xmin: 269085 ymin: 1416151 xmax: 419976.2 ymax: 1541763
 #&gt; Projected CRS: NAD83 / Alaska Albers
-#&gt; First 10 features:
-#&gt;        elev strat count presence                 geometry
-#&gt; 1  468.9167     L     0        0 POINT (293542.6 1541016)
-#&gt; 2  362.3125     L     0        0 POINT (298313.1 1533972)
-#&gt; 3  172.7500     M     0        0 POINT (281896.4 1532516)
-#&gt; 4  279.6250     L     0        0 POINT (298651.3 1530264)
-#&gt; 5  619.6000     L     0        0 POINT (311325.3 1527705)
-#&gt; 6  164.1250     M     0        0 POINT (291421.5 1518398)
-#&gt; 7  163.5000     M     0        0 POINT (287298.3 1518035)
-#&gt; 8  186.3500     L     0        0 POINT (279050.9 1517324)
-#&gt; 9  362.3125     L     0        0 POINT (346145.9 1512479)
-#&gt; 10 430.5000     L     0        0 POINT (321354.6 1509966)</code></pre>
+#&gt; # A tibble: 218 × 5
+#&gt;     elev strat count presence           geometry
+#&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;fct&gt;           &lt;POINT [m]&gt;
+#&gt;  1  469. L         0 0        (293542.6 1541016)
+#&gt;  2  362. L         0 0        (298313.1 1533972)
+#&gt;  3  173. M         0 0        (281896.4 1532516)
+#&gt;  4  280. L         0 0        (298651.3 1530264)
+#&gt;  5  620. L         0 0        (311325.3 1527705)
+#&gt;  6  164. M         0 0        (291421.5 1518398)
+#&gt;  7  164. M         0 0        (287298.3 1518035)
+#&gt;  8  186. L         0 0        (279050.9 1517324)
+#&gt;  9  362. L         0 0        (346145.9 1512479)
+#&gt; 10  430. L         0 0        (321354.6 1509966)
+#&gt; # ℹ 208 more rows</code></pre>
 <p>We can visualize the distribution of moose presence by running</p>
 <pre class="r"><code>ggplot(moose, aes(color = presence)) +
   scale_color_viridis_d(option = &quot;H&quot;) +
@@ -2226,16 +2229,16 @@ indicates it is a much better fit to the data.</p>
 #&gt; # A tibble: 218 × 8
 #&gt;    presence  elev .fitted .resid    .hat  .cooksd .std.resid
 #&gt;  * &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-#&gt;  1 0         469.  0.150  -0.571 0.0500  0.00904      -0.586
-#&gt;  2 0         362.  0.107  -0.477 0.0168  0.00198      -0.481
-#&gt;  3 0         173.  0.104  -0.468 0.00213 0.000235     -0.469
-#&gt;  4 0         280.  0.0939 -0.444 0.00616 0.000615     -0.445
-#&gt;  5 0         620.  0.198  -0.664 0.136   0.0402       -0.714
-#&gt;  6 0         164.  0.130  -0.528 0.00260 0.000364     -0.528
-#&gt;  7 0         164.  0.135  -0.538 0.00269 0.000392     -0.539
-#&gt;  8 0         186.  0.166  -0.603 0.00332 0.000607     -0.604
-#&gt;  9 0         362.  0.168  -0.606 0.0245  0.00474      -0.614
-#&gt; 10 0         430.  0.225  -0.714 0.0528  0.0150       -0.734
+#&gt;  1 0         469.   -1.73 -0.571 0.0500  0.00904      -0.586
+#&gt;  2 0         362.   -2.12 -0.477 0.0168  0.00198      -0.481
+#&gt;  3 0         173.   -2.15 -0.468 0.00213 0.000235     -0.469
+#&gt;  4 0         280.   -2.27 -0.444 0.00616 0.000615     -0.445
+#&gt;  5 0         620.   -1.40 -0.664 0.136   0.0402       -0.714
+#&gt;  6 0         164.   -1.90 -0.528 0.00260 0.000364     -0.528
+#&gt;  7 0         164.   -1.86 -0.538 0.00269 0.000392     -0.539
+#&gt;  8 0         186.   -1.61 -0.603 0.00332 0.000607     -0.604
+#&gt;  9 0         362.   -1.60 -0.606 0.0245  0.00474      -0.614
+#&gt; 10 0         430.   -1.24 -0.714 0.0528  0.0150       -0.734
 #&gt; # ℹ 208 more rows
 #&gt; # ℹ 1 more variable: geometry &lt;POINT [m]&gt;</code></pre>
 </div>
@@ -2260,7 +2263,7 @@ observed data. Next we remove the model predictions from
 to obtain the same predictions alongside prediction intervals (on the
 response scale):</p>
 <pre class="r"><code>moose_preds$preds &lt;- NULL
-augment(binmod, newdata = moose_preds, type = &quot;response&quot;, interval = &quot;prediction&quot;)</code></pre>
+augment(binmod, newdata = moose_preds, type.predict = &quot;response&quot;, interval = &quot;prediction&quot;)</code></pre>
 <pre><code>#&gt; Simple feature collection with 100 features and 5 fields
 #&gt; Geometry type: POINT
 #&gt; Dimension:     XY
@@ -2353,9 +2356,27 @@ can be found by running <code>help(&quot;generic.spmodel&quot;, &quot;spmodel&qu
 <code>?generic.spmodel</code> is shorthand for
 <code>help(&quot;generic.spmodel&quot;, &quot;spmodel&quot;)</code>.</p>
 </div>
+<div id="support-for-additional-r-packages" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Support for Additional
+<strong>R</strong> Packages</h1>
+<p><code>spmodel</code> provides support for:</p>
+<ol style="list-style-type: decimal">
+<li>The <code>tidy()</code>, <code>glance()</code> and
+<code>augment()</code> functions from the <code>broom</code>
+<strong>R</strong> package <span class="citation">(Robinson, Hayes, and
+Couch 2021)</span>.</li>
+<li>The <code>emmeans</code> <strong>R</strong> package <span class="citation">(Lenth 2024)</span> applied to <code>splm()</code>,
+<code>spautor()</code>, <code>spglm()</code>, and
+<code>spgautor()</code> model objects from <code>spmodel</code>.</li>
+</ol>
+</div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-lenth2024emmeans" class="csl-entry">
+Lenth, Russell V. 2024. <em>Emmeans: Estimated Marginal Means, Aka
+Least-Squares Means</em>. <a href="https://CRAN.R-project.org/package=emmeans">https://CRAN.R-project.org/package=emmeans</a>.
+</div>
 <div id="ref-pebesma2018sf" class="csl-entry">
 Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R:
 Standardized Support for Spatial Vector Data</span>.”</span>

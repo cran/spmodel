@@ -125,5 +125,5 @@ ggplot(moose_preds, aes(color = preds)) +
 
 ## -----------------------------------------------------------------------------
 moose_preds$preds <- NULL
-augment(binmod, newdata = moose_preds, type = "response", interval = "prediction")
+augment(binmod, newdata = moose_preds, type.predict = "response", interval = "prediction")
 
