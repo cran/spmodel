@@ -28,7 +28,7 @@
 #'   \code{"pentaspherical"}, \code{"cosine"}, \code{"wave"},
 #'   \code{"jbessel"}, \code{"gravity"}, \code{"rquad"},
 #'   \code{"magnetic"}, \code{"matern"}, \code{"cauchy"}, \code{"pexponential"},
-#'   and \code{"none"}. Parameterizations of each spatial covariance type are
+#'   \code{"ie"}, and \code{"none"}. Parameterizations of each spatial covariance type are
 #'   available in Details. Multiple spatial covariance types can be provided as
 #'   a character vector, and then \code{spglm()} is called iteratively for each
 #'   element and a list is returned for each model fit. The default for
@@ -121,6 +121,14 @@
 #'   If \code{local} is \code{TRUE}, defaults for \code{local} are chosen such
 #'   that \code{local} is transformed into
 #'   \code{list(size = 100, method = "kmeans", var_adjust = "theoretical", parallel = FALSE)}.
+#' @param range_constrain An optional logical that indicates whether the range
+#'   should be constrained to enhance numerical stability. If \code{range_constrain = TRUE},
+#'   the maximum possible range value is 4 times the maximum distance in the domain.
+#'   If \code{range_constrain = FALSE}, then maximum possible range is unbounded.
+#'   The default is \code{FALSE}.
+#'   Note that if \code{range_constrain = TRUE} and the value of \code{range} in \code{spcov_initial}
+#'   is larger than \code{range_constrain}, then \code{range_constrain} is set to
+#'   \code{FALSE}.
 #' @param ... Other arguments to [esv()] or [stats::optim()].
 #'
 #' @details The spatial generalized linear model for point-referenced data
@@ -217,7 +225,18 @@
 #'     \item cauchy: \eqn{(1 + \eta^2)^{-extra}}, \eqn{extra > 0}
 #'     \item pexponential: \eqn{exp(h^{extra}/range)}, \eqn{0 < extra \le 2}
 #'     \item none: \eqn{0}
+#'     \item ie: \eqn{0} (see below for differences compared to none)
 #'   }
+#'
+#'   There is a slight difference between \code{none} and \code{ie} (the \code{spcov_type}) from above. \code{none}
+#'   fixes the \code{"ie"} covariance parameter at zero, which should yield a model that has very similar
+#'   parameter estimates as one from [stats::glm]. Note that \code{spglm()} uses
+#'   a different likelihood, so direct likelihood-based comparisons (e.g., \code{AIC})
+#'   should not be made to compare an \code{spglm()} model to a \code{glm()} one
+#'   (though deviance can be used). \code{ie} allows the \code{"ie"} covariance
+#'   parameter to vary. If the \code{"ie"} covariance parameter is estimated near
+#'   zero, then \code{none} and \code{ie} yield similar models.
+#'
 #'
 #'   All spatial covariance functions are valid in one spatial dimension. All
 #'   spatial covariance functions except \code{triangular} and \code{cosine} are
@@ -299,7 +318,7 @@
 #' McCullagh P. and Nelder, J. A. (1989) \emph{Generalized Linear Models}. London: Chapman and Hall.
 spglm <- function(formula, family, data, spcov_type, xcoord, ycoord, spcov_initial,
                   dispersion_initial, estmethod = "reml", anisotropy = FALSE,
-                  random, randcov_initial, partition_factor, local, ...) {
+                  random, randcov_initial, partition_factor, local, range_constrain, ...) {
 
   # set exponential as default if nothing specified
   if (missing(spcov_type) && missing(spcov_initial)) {
@@ -387,6 +406,11 @@ spglm <- function(formula, family, data, spcov_type, xcoord, ycoord, spcov_initi
     local <- NULL
   }
 
+  if (missing(range_constrain)) {
+    range_constrain <- FALSE
+  }
+  # make this default of TRUE later
+
   # non standard evaluation for x and y coordinates
   xcoord <- substitute(xcoord)
   ycoord <- substitute(ycoord)
@@ -395,7 +419,7 @@ spglm <- function(formula, family, data, spcov_type, xcoord, ycoord, spcov_initi
   data_object <- get_data_object_spglm(
     formula, family, data, spcov_initial, xcoord, ycoord,
     estmethod, anisotropy, random, randcov_initial,
-    partition_factor, local, ...
+    partition_factor, local, range_constrain, ...
   )
 
   # parallel cluster if necessary

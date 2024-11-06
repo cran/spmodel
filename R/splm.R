@@ -118,6 +118,14 @@
 #'   If \code{local} is \code{TRUE}, defaults for \code{local} are chosen such
 #'   that \code{local} is transformed into
 #'   \code{list(size = 100, method = "kmeans", var_adjust = "theoretical", parallel = FALSE)}.
+#' @param range_constrain An optional logical that indicates whether the range
+#'   should be constrained to enhance numerical stability. If \code{range_constrain = TRUE},
+#'   the maximum possible range value is 4 times the maximum distance in the domain.
+#'   If \code{range_constrain = FALSE}, then maximum possible range is unbounded.
+#'   The default is \code{FALSE}.
+#'   Note that if \code{range_constrain = TRUE} and the value of \code{range} in \code{spcov_initial}
+#'   is larger than \code{range_constrain}, then \code{range_constrain} is set to
+#'   \code{FALSE}.
 #' @param ... Other arguments to [esv()] or \code{stats::optim()}.
 #'
 #' @details The spatial linear model for point-referenced data
@@ -156,7 +164,7 @@
 #'
 #'   All spatial covariance functions are valid in one spatial dimension. All
 #'   spatial covariance functions except \code{triangular} and \code{cosine} are
-#'   valid in two dimensions.
+#'   valid in two dimensions. An alias for \code{none} is \code{ie}.
 #'
 #' \code{estmethod} Details: The various estimation methods are
 #'   \itemize{
@@ -232,7 +240,10 @@
 #'   spcov_type = "exponential", xcoord = x, ycoord = y
 #' )
 #' summary(spmod)
-splm <- function(formula, data, spcov_type, xcoord, ycoord, spcov_initial, estmethod = "reml", weights = "cressie", anisotropy = FALSE, random, randcov_initial, partition_factor, local, ...) {
+splm <- function(formula, data, spcov_type, xcoord, ycoord, spcov_initial,
+                 estmethod = "reml", weights = "cressie", anisotropy = FALSE,
+                 random, randcov_initial, partition_factor, local,
+                 range_constrain, ...) {
 
 
 
@@ -293,13 +304,18 @@ splm <- function(formula, data, spcov_type, xcoord, ycoord, spcov_initial, estme
   }
 
   # set local explicitly to FALSE if iid
-  if (inherits(spcov_initial, "none") && is.null(random)) {
+  if (inherits(spcov_initial, c("none", "ie")) && is.null(random)) {
     local <- FALSE
   }
 
   if (missing(local)) {
     local <- NULL
   }
+
+  if (missing(range_constrain)) {
+    range_constrain <- FALSE
+  }
+  # make this default of TRUE later
 
   # non standard evaluation for x and y coordinates
   xcoord <- substitute(xcoord)
@@ -309,7 +325,7 @@ splm <- function(formula, data, spcov_type, xcoord, ycoord, spcov_initial, estme
   data_object <- get_data_object_splm(
     formula, data, spcov_initial, xcoord, ycoord,
     estmethod, anisotropy, random, randcov_initial,
-    partition_factor, local, ...
+    partition_factor, local, range_constrain, ...
   )
 
 
@@ -339,7 +355,7 @@ splm <- function(formula, data, spcov_type, xcoord, ycoord, spcov_initial, estme
 
 
 
-  if (inherits(cov_est_object$spcov_params_val, "none") && is.null(random)) {
+  if (inherits(cov_est_object$spcov_params_val, c("none", "ie")) && is.null(random)) {
     model_stats <- get_model_stats_splm_iid(cov_est_object, data_object, estmethod)
   } else {
     model_stats <- get_model_stats_splm(cov_est_object, data_object, estmethod)

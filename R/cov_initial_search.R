@@ -146,6 +146,7 @@ cov_initial_search.exponential <- function(spcov_initial_NA, estmethod, data_obj
       dist_vector = dist_vector,
       residual_vector2 = residual_vector2
     )
+
     # find minimum value and record parameters
     min_params <- unlist(cov_grid_splits[[which.min(objvals)]])
     spcov_params <- min_params[c("de", "ie", "range", "rotate", "scale")]
@@ -583,6 +584,9 @@ cov_initial_search.none <- function(spcov_initial_NA, estmethod, data_object,
   # return the best parameters
   best_params
 }
+
+#' @export
+cov_initial_search.ie <- cov_initial_search.none
 
 #' @export
 cov_initial_search.matern <- function(spcov_initial_NA, estmethod, data_object,
