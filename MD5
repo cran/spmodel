@@ -1,6 +1,6 @@
-b42f3e55d64b04b0edf104e7fea2f289 *DESCRIPTION
+325ce97f9d0173043f1d82a1e967b8d4 *DESCRIPTION
 c91af6652f02bd3649caae763a51443e *NAMESPACE
-2536c300dafc502e8067a0797287947e *NEWS.md
+620e1dd065190bcfeeae2b2b2031987a *NEWS.md
 b5c6ec19f3c7d420db7444440883c386 *R/AIC_deprecated.R
 c9ed2dcc4c89652c278e1051d29dd41e *R/AIC_glm_deprecated.R
 93cf697d55f36875532f0d60f39844be *R/AICc.R
@@ -57,12 +57,12 @@ cbbf6306fe683279651302c2385c7d4f *R/get_coefficients.R
 c43b8c6fa301e4fd01fb027af48c5d0a *R/get_cooks_distance.R
 3db2bfcdc5453c51b8ba2062dac423eb *R/get_cooks_distance_glm.R
 ac22dbc78bbef2ac6fed21ed7779512d *R/get_cov_matrix_list.R
-1a2e6a85e3abf97ffcc18071e8533a56 *R/get_data_object.R
-53fcdd6e1910ce418d6b0d72d1accd9b *R/get_data_object_glm.R
+b1f159944629aefefd34fcaa1b5bdfa9 *R/get_data_object.R
+1b893aa827f274e3f25a32a26ec4733b *R/get_data_object_glm.R
 ecceb554687008613b7c57dc68600cfe *R/get_deviance_glm.R
 3b24f38acb3340d9d0988b87e17d2220 *R/get_eigenprods.R
 ebaeb6b27ed6746dd444db6d94883eb5 *R/get_eigenprods_glm.R
-9d7df2e66c393e4e7b5c00bcf9ca56aa *R/get_esv.R
+08fecf2e590b80e73ffd32b6db472966 *R/get_esv.R
 9e631c641e857f6e2b4a05f9ebe99f05 *R/get_esv_dotlist.R
 8a3fce094e23dcc6d6dafada10d0ac1e *R/get_fitted.R
 bac6699834eca21e86ef810e9224100c *R/get_fitted_glm.R
@@ -138,7 +138,7 @@ ec9b2cfcf93c1f95dfb5e6634f0d8658 *R/replace_data_object_dimcoords1.R
 92ab1b409ebe8ee4bc892285d531eab1 *R/residuals.R
 9edde0ff4fab31a769f9da2022f1a61f *R/residuals_glm.R
 91f4308a565a0b2bade2763a8bfe3d0b *R/response_checks_glm.R
-5a088674b5cad253249cb875dc87b43d *R/sf_to_df.R
+3e91dccc2760a775f2d5e1b5c25ba0f4 *R/sf_to_df.R
 12bed235d92a216ae3fcface48441e11 *R/smwInv_rand.R
 78aadc184d41f57c5261f52ea112401a *R/spautor.R
 df33e735e6b125ca687d02b0dbb8b4ab *R/spautorRF.R
@@ -211,9 +211,9 @@ e69a5ddbb55fdc937d3500a76b9713c4 *data/seal.rda
 75668784d87ad5f9bf23e57c4dbd7d0d *data/sulfate_preds.rda
 a6f24a27599f9d1cb2df9fe6d888c50d *data/texas.rda
 e2858043a564484b362a17a11564587a *inst/CITATION
-cab0fb68b85772f49dc29f5d529d3703 *inst/doc/introduction.R
-848bc5e19fbaa520260169647cea4be5 *inst/doc/introduction.Rmd
-79133231fad9b25721fa9338bc9f694f *inst/doc/introduction.html
+e6475fae405b67b8c4b1014be4ba6b9f *inst/doc/introduction.R
+e843eea6f078d7db8e95ab7c3cd171d2 *inst/doc/introduction.Rmd
+3be50a2025086d7795faf2dd92e3ed10 *inst/doc/introduction.html
 605d543a7aec56371fde9d5b8bc3df2a *inst/extdata/exdata.rda
 4540d0610b8d2d802863de8d08918f4a *inst/extdata/exdata_M.rda
 7625f6296e430d6e831a5349ee13a64f *inst/extdata/exdata_Mpoly.rda
@@ -298,4 +298,4 @@ bd61ac2a941cf9e5774b2896b5cb04a2 *tests/testthat/test-spgautor.R
 daac6bfffdf58b54eaf7ea9af2a57e40 *tests/testthat/test-splm.R
 fb5d873d5f8c04981c36dbb25fab90b2 *tests/testthat/test-sprsim.R
 e2236511df4047aee11176c4af7e2446 *tests/testthat/test-utils.R
-848bc5e19fbaa520260169647cea4be5 *vignettes/introduction.Rmd
+e843eea6f078d7db8e95ab7c3cd171d2 *vignettes/introduction.Rmd

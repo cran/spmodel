@@ -1,6 +1,6 @@
 Package: spmodel
 Title: Spatial Statistical Modeling and Prediction
-Version: 0.11.0
+Version: 0.11.1
 Authors@R: c(
     person(given = "Michael",
            family = "Dumelle",
@@ -42,7 +42,7 @@ Config/testthat/edition: 3
 URL: https://usepa.github.io/spmodel/
 BugReports: https://github.com/USEPA/spmodel/issues
 NeedsCompilation: no
-Packaged: 2025-07-02 23:54:43 UTC; MDUMELLE
+Packaged: 2025-11-14 19:40:43 UTC; MDUMELLE
 Author: Michael Dumelle [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3393-5529>),
   Matt Higham [aut] (ORCID: <https://orcid.org/0009-0006-4217-625X>),
@@ -51,4 +51,4 @@ Author: Michael Dumelle [aut, cre] (ORCID:
   Jay M. Ver Hoef [aut] (ORCID: <https://orcid.org/0000-0003-4302-6895>)
 Maintainer: Michael Dumelle <Dumelle.Michael@epa.gov>
 Repository: CRAN
-Date/Publication: 2025-07-03 02:20:02 UTC
+Date/Publication: 2025-11-14 23:40:02 UTC
