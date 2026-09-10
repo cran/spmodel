@@ -1,12 +1,16 @@
 Package: spmodel
 Title: Spatial Statistical Modeling and Prediction
-Version: 0.13.0
+Version: 0.14.0
 Authors@R: c(
     person(given = "Michael",
            family = "Dumelle",
            role = c("aut", "cre"),
            email = "Dumelle.Michael@epa.gov",
            comment = c(ORCID = "0000-0002-3393-5529")),
+    person(given = "Matthew",
+           family = "Heaton",
+           role = "ctb",
+           comment = c(ORCID = "0000-0003-4654-9827")),    
     person(given = "Matt",
            family = "Higham",
            role = "aut",
@@ -15,40 +19,39 @@ Authors@R: c(
     person(given = "Ryan A.",
        family = "Hill",
        role = "ctb",
-       email = "hill.ryan@epa.gov",
        comment = c(ORCID = "0000-0001-9583-0426")),
     person(given = "Michael",
        family = "Mahon",
        role = "ctb",
-       email = "Mahon.Michael@epa.gov",
        comment = c(ORCID = "0000-0002-9436-2998")),
     person(given = "Jay M.",
        family = "Ver Hoef",
        role = "aut",
-       email = "jay.verhoef@noaa.gov",
        comment = c(ORCID = "0000-0003-4302-6895"))
     )
 Description: Fit, summarize, and predict for a variety of spatial statistical models applied to point-referenced and areal (lattice) data. Parameters are estimated using various methods. Additional modeling features include anisotropy, non-spatial random effects, partition factors, big data approaches, and more. Model-fit statistics are used to summarize, visualize, and compare models. Predictions at unobserved locations are readily obtainable. For additional details, see Dumelle et al. (2023) <doi:10.1371/journal.pone.0282524>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends: R (>= 3.5.0)
 Imports: graphics, generics, Matrix, sf, stats, tibble, parallel
 Suggests: rmarkdown, knitr, testthat (>= 3.0.0), ggplot2, ranger,
-        statmod, pROC, emmeans (>= 1.4), estimability
+        statmod, pROC, emmeans (>= 1.4), estimability, numDeriv,
+        GPvecchia, randomForest, xgboost, spsurvey
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://usepa.github.io/spmodel/
 BugReports: https://github.com/USEPA/spmodel/issues
 NeedsCompilation: no
-Packaged: 2026-06-09 19:19:28 UTC; MDUMELLE
+Packaged: 2026-09-10 17:23:44 UTC; MDUMELLE
 Author: Michael Dumelle [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3393-5529>),
+  Matthew Heaton [ctb] (ORCID: <https://orcid.org/0000-0003-4654-9827>),
   Matt Higham [aut] (ORCID: <https://orcid.org/0009-0006-4217-625X>),
   Ryan A. Hill [ctb] (ORCID: <https://orcid.org/0000-0001-9583-0426>),
   Michael Mahon [ctb] (ORCID: <https://orcid.org/0000-0002-9436-2998>),
   Jay M. Ver Hoef [aut] (ORCID: <https://orcid.org/0000-0003-4302-6895>)
 Maintainer: Michael Dumelle <Dumelle.Michael@epa.gov>
 Repository: CRAN
-Date/Publication: 2026-06-10 05:20:02 UTC
+Date/Publication: 2026-09-10 18:40:02 UTC
